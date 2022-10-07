@@ -1,21 +1,23 @@
 *starting.txt*  Nvim
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+
 
 
 Starting Vim						*starting*
 
-                                      Type |gO| to see the table of contents.
+
 
 ==============================================================================
 Nvim arguments						*vim-arguments*
 
-Most often, Nvim is started to edit a single file with the command: >
+Most often, Nvim is started to edit a single file with the command:
+
 
 	nvim filename
 
-More generally, Nvim is started with: >
+More generally, Nvim is started with:
+
 
 	nvim [option | filename] ..
 
@@ -24,39 +26,46 @@ can be given.  However, watch out for options that take an argument.
 
 The following items decide how to start editing:
 
-							*-file* *---*
+							*-file*  *---*
 filename	One or more file names.  The first one will be the current
 		file and read into the buffer.  The cursor will be positioned
 		on the first line of the buffer.
 		To avoid a file name starting with a '-' being interpreted as
-		an option, precede the arglist with "--", e.g.: >
+		an option, precede the arglist with "--", e.g.:
+
 			nvim -- -filename
-<		All arguments after the "--" will be interpreted as file names,
+		All arguments after the "--" will be interpreted as file names,
 		no other options or "+command" argument can follow.
 
 							*--*
 -		Alias for stdin (standard input).
-		Example: >
+		Example:
+
 			echo text | nvim - file
-<		"text" is read into buffer 1, "file" is opened as buffer 2.
+		"text" is read into buffer 1, "file" is opened as buffer 2.
 		In most cases (except -s, -es, |--embed|, --headless) if stdin
-		is not a TTY then it is read as text, so "-" is implied: >
+		is not a TTY then it is read as text, so "-" is implied:
+
 			echo text | nvim file
-<		The buffer will be marked as modified, because it contains
+		The buffer will be marked as modified, because it contains
 		text that needs to be saved (except for readonly |-R| mode).
-		If you don't like that, put these lines in your init.vim: >
+		If you don't like that, put these lines in your init.vim:
+
 			" Don't set 'modified' when reading from stdin
 			au StdinReadPost * set nomodified
-<
-		To read stdin as Normal commands use |-s| with "-": >
-			echo "ifoo" | nvim -s -
-<		To read stdin as Ex commands use |-es| or |-e|: >
-			echo "echo getpid()" | nvim -e - -V1
-<		To open a file literally named "-", put it after "--": >
-			echo foo | nvim -- -
-<		To read stdin as text with |--headless| use "-".
 
-							*-t* *-tag*
+		To read stdin as Normal commands use |-s| with "-":
+
+			echo "ifoo" | nvim -s -
+		To read stdin as Ex commands use |-es| or |-e|:
+
+			echo "echo getpid()" | nvim -e - -V1
+		To open a file literally named "-", put it after "--":
+
+			echo foo | nvim -- -
+		To read stdin as text with |--headless| use "-".
+
+							*-t*  *-tag*
 -t {tag}	A tag.  "tag" is looked up in the tags file, the associated
 		file becomes the current file, and the associated command is
 		executed.  Mostly this is used for C programs, in which case
@@ -65,7 +74,7 @@ filename	One or more file names.  The first one will be the current
 		cursor is positioned on the start of the function (see
 		|tags|).
 
-							*-q* *-qf*
+							*-q*  *-qf*
 -q [errorfile]	QuickFix mode.  The file with the name [errorfile] is read
 		and the first error is displayed.  See |quickfix|.
 		If [errorfile] is not given, the 'errorfile' option is used
@@ -79,11 +88,11 @@ The option arguments may be given in any order.  Single-letter options can be
 combined after one dash.  There can be no option arguments after the "--"
 argument.
 
---help							*-h* *--help* *-?*
+--help							*-h*  *--help*  *-?*
 -?
 -h		Give usage (help) message and exit.
 
---version						*-v* *--version*
+--version						*-v*  *--version*
 -v		Print version information and exit.  Same output as for
 		|:version| command.
 
@@ -96,8 +105,8 @@ argument.
 
 							*--noplugin*
 --noplugin	Skip loading plugins.  Resets the 'loadplugins' option.
-		Note that the |-u| argument may also disable loading plugins:
-			argument	load vimrc files	load plugins ~
+		The |-u| argument may also disable loading plugins:
+			argument	load vimrc files	load plugins
 			(nothing)		yes		    yes
 			-u NONE			no		    no
 			-u NORC			no		    yes
@@ -122,18 +131,19 @@ argument.
 		last used from |shada|. To force a search from the first
 		line use "+1 +/pat".
 
-+{command}						*-+c* *-c*
++{command}						*-+c*  *-c*
 -c {command}	{command} will be executed after the first file has been
 		read (and after autocommands and modelines for that file have
 		been processed).  "command" is interpreted as an Ex command.
 		If the "command" contains spaces, it must be enclosed in
 		double quotes (this depends on the shell that is used).
-		Example: >
+		Example:
+
 			vim  "+set si"  main.c
 			vim  "+find stdio.h"
 			vim  -c "set ff=dos"  -c wq  mine.mak
-<
-		Note: You can use up to 10 "+" or "-c" arguments in a Vim
+
+		You can use up to 10 "+" or "-c" arguments in a Vim
 		command.  They are executed in the order given.  A "-S"
 		argument counts as a "-c" argument as well.
 
@@ -144,16 +154,17 @@ argument.
 
 							*-S*
 -S {file}	The {file} will be sourced after the first file has been read.
-		This is an easy way to do the equivalent of: >
+		This is an easy way to do the equivalent of:
+
 			-c "source {file}"
-<		It can be mixed with "-c" arguments and repeated like "-c".
+		It can be mixed with "-c" arguments and repeated like "-c".
 		The limit of 10 "-c" arguments applies here as well.
 		{file} cannot start with a "-".
 
 -S		Works like "-S Session.vim".  Only when used as the last
 		argument or when another "-" option follows.
 
--L							*-L* *-r*
+-L							*-L*  *-r*
 -r		Recovery mode.  Without a file name argument, a list of
 		existing swap files is given.  With a file name, a swap file
 		is read to recover a crashed editing session.  See
@@ -185,33 +196,36 @@ argument.
 		the 'modifiable' and 'write' options can be set to enable
 		changes and writing.
 
--e							*-e* *-E*
+-e							*-e*  *-E*
 -E		Start Nvim in Ex mode |gQ|, see |Ex-mode|.
 
 		If stdin is not a TTY:
 		  -e reads/executes stdin as Ex commands.
 		  -E reads stdin as text (into buffer 1).
 
--es						*-es* *-Es* *-s-ex* *silent-mode*
+-es						*-es*  *-Es*  *-s-ex*  *silent-mode*
 -Es		Silent mode (no UI), for scripting.  Unrelated to |-s|.
 		Disables most prompts, messages, warnings and errors.
 
-		-es reads/executes stdin as Ex commands. >
+		-es reads/executes stdin as Ex commands.
+
 			printf "put ='foo'\n%%print\n" | nvim -es
 
-<		-Es reads stdin as text (into buffer 1).  Use |-c| or "+" to
-		send commands. >
+		-Es reads stdin as text (into buffer 1).  Use |-c| or "+" to
+		send commands.
+
 			printf "foo\n" | nvim -Es +"%print"
 
-<		Output of these commands is displayed (to stdout):
+		Output of these commands is displayed (to stdout):
 			:print
 			:list
 			:number
 			:set      (to display option values)
-		When 'verbose' is set messages are printed to stderr. >
+		When 'verbose' is set messages are printed to stderr.
+
 			echo foo | nvim -V1 -es
 
-<		User |config| is skipped (unless given with |-u|).
+		User |config| is skipped (unless given with |-u|).
 		Swap file is skipped (like |-n|).
 		User |shada| is loaded (unless "-i NONE" is given).
 
@@ -231,21 +245,23 @@ argument.
 							*-H*
 -H		Hebrew mode.  Sets the 'hkmap' and 'rightleft' options on.
 
-							*-V* *verbose*
+							*-V*  *verbose*
 -V[N]		Verbose.  Sets the 'verbose' option to [N] (default: 10).
 		Messages will be given for each file that is ":source"d and
 		for reading or writing a ShaDa file.  Can be used to find
 		out what is happening upon startup and exit.
-		Example: >
+		Example:
+
 			nvim -V8
 
 -V[N]{filename}
 		Like -V and set 'verbosefile' to {filename}.  Messages are not
 		displayed; instead they are written to the file {filename}.
 		{filename} must not start with a digit.
-		Example: >
+		Example:
+
 			nvim -V20vimlog
-<
+
 							*-D*
 -D		Debugging.  Go to debugging mode when executing the first
 		command from a script. |debug-mode|
@@ -288,15 +304,16 @@ argument.
 							*-d*
 -d		Start in |diff-mode|.
 
-							*-u* *E282*
+							*-u*  *E282*
 -u {vimrc}	The file {vimrc} is read for initializations.  Most other
 		initializations are skipped; see |initialization|.
 
 		This can be used to start Vim in a special mode, with special
 		mappings and settings.  A shell alias can be used to make
-		this easy to use.  For example: >
+		this easy to use.  For example:
+
 			alias vimc vim -u ~/.config/nvim/c_init.vim !*
-<		Also consider using autocommands; see |autocommand|.
+		Also consider using autocommands; see |autocommand|.
 
 		When {vimrc} is "NONE" (all uppercase), all initializations
 		from files and environment variables are skipped.  Plugins and
@@ -314,11 +331,13 @@ argument.
 
 							*-s*
 -s {scriptin}	Read script file {scriptin}, interpreting characters as
-		Normal-mode input.  The same can be done with ":source!": >
+		Normal-mode input.  The same can be done with ":source!":
+
 			:source! {scriptin}
-<		Reads from stdin if {scriptin} is "-": >
+		Reads from stdin if {scriptin} is "-":
+
 			echo "ifoo" | nvim -s -
-<		If the end of the file is reached before Nvim exits, further
+		If the end of the file is reached before Nvim exits, further
 		characters are read from the keyboard.
 
 		Does not work with |-es|.  See also |complex-repeat|.
@@ -353,14 +372,16 @@ argument.
 		During this pre-startup phase the user config is of course not
 		available (similar to `--cmd`).
 
-		Embedders _not_ using the UI protocol must pass |--headless|: >
+		Embedders _not_ using the UI protocol must pass |--headless|:
+
 		    nvim --embed --headless
 
-<		Then startup will continue without waiting for `nvim_ui_attach`.
-		This is equivalent to: >
+		Then startup will continue without waiting for `nvim_ui_attach`.
+		This is equivalent to:
+
 		    nvim --headless --cmd "call stdioopen({'rpc': v:true})"
 
-<		See also: |ui-startup| |channel-stdio|
+		See also: |ui-startup| |channel-stdio|
 
 							*--headless*
 --headless 	Start without UI, and do not wait for `nvim_ui_attach`. The
@@ -374,9 +395,10 @@ argument.
 		empty during or after |VimEnter|.
 
 		To read stdin as text, "-" must be given explicitly:
-		--headless cannot assume that stdin is just text. >
+		--headless cannot assume that stdin is just text.
+
 			echo foo | nvim --headless +"%print" +"q!" -
-<
+
 		See also |--embed|.
 		See also |-es|, which also disables most messages.
 
@@ -385,12 +407,12 @@ argument.
 		primary listen address |v:servername| to {addr}. |serverstart()|
 
 ==============================================================================
-Initialization					*initialization* *startup*
+Initialization					*initialization*  *startup*
 
 At startup, Nvim checks environment variables and files and sets values
 accordingly, proceeding as follows:
 
-1. Set the 'shell' option			*SHELL* *COMSPEC*
+1. Set the 'shell' option			*SHELL*  *COMSPEC*
 	The environment variable SHELL, if it exists, is used to set the
 	'shell' option.  On Win32, the COMSPEC variable is used
 	if SHELL is not set.
@@ -408,14 +430,15 @@ accordingly, proceeding as follows:
 4. Setup |default-mappings| and |default-autocmds|.  Create |popup-menu|.
 
 5. Enable filetype and indent plugins.
-	This does the same as the command: >
+	This does the same as the command:
+
 		:runtime! ftplugin.vim indent.vim
-<	Skipped if the "-u NONE" command line argument was given.
+	Skipped if the "-u NONE" command line argument was given.
 
 6. Load user config (execute Ex commands from files, environment, …).
 	$VIMINIT environment variable is read as one Ex command line (separate
 	multiple commands with '|' or <NL>).
-					*config* *init.vim* *init.lua* *vimrc* *exrc*
+					*config*  *init.vim*  *init.lua*  *vimrc*  *exrc*
 	A file containing initialization commands is generically called
 	a "vimrc" or config file.  It can be either Vimscript ("init.vim") or
 	Lua ("init.lua"), but not both. *E5422*
@@ -434,13 +457,13 @@ accordingly, proceeding as follows:
 
 	If Nvim was started with |-es| all initializations until 5. are
 	skipped.
-						*system-vimrc* *sysinit.vim*
+						*system-vimrc*  *sysinit.vim*
      a. The system vimrc file is read for initializations.  If
 	nvim/sysinit.vim file exists in one of $XDG_CONFIG_DIRS, it will be
 	used.  Otherwise the system vimrc file is used. The path of this file
 	is given by the |:version| command.  Usually it's "$VIM/sysinit.vim".
 
-						*VIMINIT* *EXINIT* *$MYVIMRC*
+						*VIMINIT*  *EXINIT*  *$MYVIMRC*
      b. Locations searched for initializations, in order of preference:
 	-  $VIMINIT environment variable (Ex command line).
 	-  User |config|: $XDG_CONFIG_HOME/nvim/init.vim.
@@ -457,22 +480,25 @@ accordingly, proceeding as follows:
 	-  The file ".exrc"
 
 7. Enable filetype detection.
-	This does the same as the command: >
+	This does the same as the command:
+
 		:runtime! filetype.lua filetype.vim
-<	Skipped if ":filetype off" was called or if the "-u NONE" command line
+	Skipped if ":filetype off" was called or if the "-u NONE" command line
 	argument was given.
 
 8. Enable syntax highlighting.
-	This does the same as the command: >
+	This does the same as the command:
+
 		:runtime! syntax/syntax.vim
-<	Skipped if ":syntax off" was called or if the "-u NONE" command
+	Skipped if ":syntax off" was called or if the "-u NONE" command
 	line argument was given.
 
 9. Load the plugin scripts.					*load-plugins*
-	This does the same as the command: >
+	This does the same as the command:
+
 		:runtime! plugin/**/*.vim
 		:runtime! plugin/**/*.lua
-<	The result is that all directories in 'runtimepath' will be searched
+	The result is that all directories in 'runtimepath' will be searched
 	for the "plugin" sub-directory and all files ending in ".vim" or
 	".lua" will be sourced (in alphabetical order per directory),
 	also in subdirectories. First "*.vim" are sourced, then "*.lua" files.
@@ -484,7 +510,7 @@ accordingly, proceeding as follows:
 	- The |--noplugin| command line argument is used.
 	- The |--clean| command line argument is used.
 	- The "-u NONE" command line argument is used |-u|.
-	Note that using "-c 'set noloadplugins'" doesn't work, because the
+	Using "-c 'set noloadplugins'" doesn't work, because the
 	commands from the command line have not been executed yet.  You can
 	use "--cmd 'set noloadplugins'" or "--cmd 'set loadplugins'" |--cmd|.
 
@@ -494,7 +520,7 @@ accordingly, proceeding as follows:
 	|packages|.
 
 	The plugins scripts are loaded, as above, but now only the directories
-	ending in "after" are used.  Note that 'runtimepath' will have changed
+	ending in "after" are used.  'runtimepath' will have changed
 	if packages have been found, but that should not add a directory
 	ending in "after".
 
@@ -530,14 +556,14 @@ accordingly, proceeding as follows:
 	The |VimEnter| autocommands are executed.
 
 
-Saving the current state of Vim to a file ~
+Saving the current state of Vim to a file
 
 Whenever you have changed values of options or when you have created a
 mapping, then you may want to save them in a vimrc file for later use.  See
 |save-settings| about saving the current state of settings to a file.
 
 
-Avoiding trojan horses ~
+Avoiding trojan horses
 							*trojan-horse*
 While reading the "vimrc" or the "exrc" file in the current directory, some
 commands can be disabled for security reasons by setting the 'secure' option.
@@ -562,7 +588,7 @@ part of the line in the tags file) is always done in secure mode.  This works
 just like executing a command from a vimrc in the current directory.
 
 
-If Vim startup is slow ~
+If Vim startup is slow
 							*slow-start*
 If Vim takes a long time to start up, use the |--startuptime| argument to find
 out what happens.
@@ -573,7 +599,7 @@ moment (use the Vim argument "-i NONE", |-i|).  Try reducing the number of
 lines stored in a register with ":set shada='20,<50,s10".  |shada-file|.
 
 
-Troubleshooting broken configurations ~
+Troubleshooting broken configurations
 							*bisect*
 The extreme flexibility of editors like Vim and Emacs means that any plugin or
 setting can affect the entire editor in ways that are not initially obvious.
@@ -587,7 +613,7 @@ To find the cause of a problem in your config, you must "bisect" it:
    plugin causing the issue.
 
 
-Intro message ~
+Intro message
 							*:intro*
 When Vim starts without a file name, an introductory message is displayed.  It
 is removed as soon as the display is redrawn.  To see the message again, use
@@ -633,21 +659,22 @@ Nvim will try to get the value for $VIMRUNTIME in this order:
 After doing this once, Nvim sets the $VIMRUNTIME environment variable.
 
 In case you need the value of $VIMRUNTIME in a shell (e.g., for a script that
-greps in the help files) you might be able to use this: >
+greps in the help files) you might be able to use this:
+
 
 	VIMRUNTIME="$(nvim --clean --headless --cmd 'echo $VIMRUNTIME|q')"
 
 ==============================================================================
 Suspending						*suspend*
 
-					*CTRL-Z* *v_CTRL-Z*
-CTRL-Z			Suspend Nvim, like ":stop".
+					*ctrl-z*  *v_ctrl-z*
+ctrl-z			Suspend Nvim, like ":stop".
 			Works in Normal and in Visual mode.  In Insert and
-			Command-line mode, the CTRL-Z is inserted as a normal
+			Command-line mode, the ctrl-z is inserted as a normal
 			character.  In Visual mode Nvim goes back to Normal
 			mode.
 
-:sus[pend][!]	or			*:sus* *:suspend* *:st* *:stop*
+:sus[pend][!]	or			*:sus*  *:suspend*  *:st*  *:stop*
 :st[op][!]		Suspend Nvim using OS "job control"; it will continue
 			if you make it the foreground job again.  Triggers
 			|VimSuspend| before suspending and |VimResume| when
@@ -681,7 +708,7 @@ flexibility.  There are a few commands to generate a vimrc file automatically.
 You can use these files as they are, or copy/paste lines to include in another
 vimrc file.
 
-							*:mk* *:mkexrc*
+							*:mk*  *:mkexrc*
 :mk[exrc] [file]	Write current key mappings and changed options to
 			[file] (default ".exrc" in the current directory),
 			unless it already exists.
@@ -690,7 +717,7 @@ vimrc file.
 			options to [file] (default ".exrc" in the current
 			directory).
 
-						*:mkv* *:mkvi* *:mkvimrc*
+						*:mkv*  *:mkvi*  *:mkvimrc*
 :mkv[imrc][!] [file]	Like ":mkexrc", but the default is ".nvimrc" in the
 			current directory.  The ":version" command is also
 			written to the file.
@@ -700,7 +727,7 @@ that when these commands are executed, the current key mappings and options
 will be set to the same values.  The options 'columns', 'endofline',
 'fileformat', 'lines', 'modified', and 'scroll' are not included, because
 these are terminal or file dependent.
-Note that the options 'binary', 'paste' and 'readonly' are included, this
+The options 'binary', 'paste' and 'readonly' are included, this
 might not always be what you want.
 
 When special keys are used in mappings, The 'cpoptions' option will be
@@ -725,9 +752,10 @@ these steps:
 2. Play with the option until it's right.  E.g., try out different values for
    'guifont'.
 3. Append a line to set the value of the option, using the expression register
-   '=' to enter the value.  E.g., for the 'guifont' option: >
+   '=' to enter the value.  E.g., for the 'guifont' option:
+
    o:set guifont=<C-R>=&guifont<CR><Esc>
-<  [<C-R> is a CTRL-R, <CR> is a return, <Esc> is the escape key]
+  [<C-R> is a ctrl-r, <CR> is a return, <Esc> is the escape key]
    You need to escape special characters, esp. spaces.
 
 ==============================================================================
@@ -735,13 +763,13 @@ Views and Sessions					*views-sessions*
 
 This is introduced in sections |21.4| and |21.5| of the user manual.
 
-						*View* *view-file*
+						*View*  *view-file*
 A View is a collection of settings that apply to one window.  You can save a
 View and when you restore it later, the text is displayed in the same way.
 The options and mappings in this window will also be restored, so that you can
 continue editing like when the View was saved.
 
-						*Session* *session-file*
+						*Session*  *session-file*
 A Session keeps the Views for all windows, plus the global settings.  You can
 save a Session and when you restore it later the window layout looks the same.
 You can use a Session to quickly switch between different projects,
@@ -751,10 +779,11 @@ Views and Sessions are a nice addition to ShaDa files, which are used to
 remember information for all Views and Sessions together |shada-file|.
 
 You can quickly start editing with a previously saved View or Session with the
-|-S| argument: >
+|-S| argument:
+
 	vim -S Session.vim
-<
-							*:mks* *:mksession*
+
+							*:mks*  *:mksession*
 :mks[ession][!] [file]	Write a Vim script that restores the current editing
 			session.
 			When [!] is included an existing file is overwritten.
@@ -796,7 +825,8 @@ resulting file, when executed with a ":source" command:
 
 After restoring the Session, the full filename of your current Session is
 available in the internal variable |v:this_session|.
-An example mapping: >
+An example mapping:
+
   :nmap <F2> :wa<Bar>exe "mksession! " .. v:this_session<CR>:so ~/sessions/
 This saves the current Session, and starts off the command to load another.
 
@@ -810,7 +840,7 @@ While the session file is loading the SessionLoad global variable is set to 1.
 Plugins can use this to postpone some work until the SessionLoadPost event is
 triggered.
 
-							*:mkvie* *:mkview*
+							*:mkvie*  *:mkview*
 :mkvie[w][!] [file]	Write a Vim script that restores the contents of the
 			current window.
 			When [!] is included an existing file is overwritten.
@@ -845,7 +875,7 @@ The output of ":mkview" contains these items:
 6. The local current directory, if it is different from the global current
    directory and 'viewoptions' contains "curdir".
 
-Note that Views and Sessions are not perfect:
+Views and Sessions are not perfect:
 - They don't restore everything.  For example, defined functions, autocommands
   and ":syntax on" are not included.  Things like register contents and
   command line history are in ShaDa, not in Sessions or Views.
@@ -860,7 +890,7 @@ Note that Views and Sessions are not perfect:
 - The Vim script is not very efficient.  But still faster than typing the
   commands yourself!
 
-							*:lo* *:loadview*
+							*:lo*  *:loadview*
 :lo[adview] [nr]	Load the view for the current file.  When [nr] is
 			omitted, the view stored with ":mkview" is loaded.
 			When [nr] is specified, the view stored with ":mkview
@@ -874,12 +904,13 @@ found.
 
 You might want to clean up your 'viewdir' directory now and then.
 
-To automatically save and restore views for *.c files: >
+To automatically save and restore views for *.c files:
+
 	au BufWinLeave *.c mkview
 	au BufWinEnter *.c silent! loadview
 
 ==============================================================================
-Shada ("shared data") file			*shada* *shada-file*
+Shada ("shared data") file			*shada*  *shada-file*
 
 If you exit Vim and later start it again, you would normally lose a lot of
 information.  The ShaDa file can be used to remember that information, which
@@ -957,15 +988,18 @@ resembles what happens with the "1 to "9 delete registers.  If the current
 cursor position is already present in '0 to '9, it is moved to '0, to avoid
 having the same position twice.  The result is that with "'0", you can jump
 back to the file and line where you exited Vim.  To do that right away, try
-using this command: >
+using this command:
+
 
 	vim -c "normal '0"
 
-In a csh compatible shell you could make an alias for it: >
+In a csh compatible shell you could make an alias for it:
+
 
 	alias lvim vim -c '"'normal "'"0'"'
 
-For a bash-like shell: >
+For a bash-like shell:
+
 
 	alias lvim='vim -c "normal '\''0"'
 
@@ -1058,7 +1092,7 @@ MANUALLY READING AND WRITING				*shada-read-write*
 
 Two commands can be used to read and write the ShaDa file manually.  This
 can be used to exchange registers between two running Vim programs: First
-type ":wsh" in one and then ":rsh" in the other.  Note that if the register
+type ":wsh" in one and then ":rsh" in the other.  If the register
 already contained something, then ":rsh!" would be required.  Also note
 however that this means everything will be overwritten with information from
 the first Vim, including the command line history, etc.
@@ -1070,14 +1104,15 @@ do this.  This can be useful in order to create a second file, say
 "~/.my.shada" which could contain certain settings that you always want when
 you first start Neovim.  For example, you can preload registers with
 particular data, or put certain commands in the command line history.  A line
-in your |config| file like >
+in your |config| file like
+
 	:rshada! ~/.my.shada
 can be used to load this information.  You could even have different ShaDa
 files for different types of files (e.g., C code) and load them based on the
 file name, using the ":autocmd" command (see |:autocmd|).  More information on
 ShaDa file format is contained in |shada-format| section.
 
-					  *E136* *E929* *shada-error-handling*
+					  *E136*  *E929*  *shada-error-handling*
 Some errors make Neovim leave temporary file named `{basename}.tmp.X` (X is
 any free letter from `a` to `z`) while normally it will create this file,
 write to it and then rename `{basename}.tmp.X` to `{basename}`. Such errors
@@ -1115,13 +1150,13 @@ running) you have additional options:
   different from using |:wshada| with bang, but "rm -f" works in some cases
   when you don't have write permissions.
 
-						    *:rsh* *:rshada* *E886*
+						    *:rsh*  *:rshada*  *E886*
 :rsh[ada][!] [file]	Read from ShaDa file [file] (default: see above).
 			If [!] is given, then any information that is
 			already set (registers, marks, |v:oldfiles|, etc.)
 			will be overwritten.
 
-						    *:wsh* *:wshada* *E137*
+						    *:wsh*  *:wshada*  *E137*
 :wsh[ada][!] [file]	Write to ShaDa file [file] (default: see above).
 			The information in the file is first read in to make
 			a merge between old and new info.  When [!] is used,
@@ -1134,16 +1169,17 @@ running) you have additional options:
 			were left behind (e.g.
 			~/.local/state/nvim/shada/main.shada.tmp*).
 
-			Note: Executing :wshada will reset all |'quote| marks.
+			Executing :wshada will reset all |'quote| marks.
 
-						*:o* *:ol* *:oldfiles*
+						*:o*  *:ol*  *:oldfiles*
 :o[ldfiles]		List the files that have marks stored in the ShaDa
 			file.  This list is read on startup and only changes
 			afterwards with `:rshada!`.  Also see |v:oldfiles|.
 			The number can be used with |c_#<|.
-			The output can be filtered with |:filter|, e.g.: >
+			The output can be filtered with |:filter|, e.g.:
+
 				filter /\.vim/ oldfiles
-<			The filtering happens on the file name.
+			The filtering happens on the file name.
 
 :bro[wse] o[ldfiles][!]
 			List file names as with |:oldfiles|, and then prompt
@@ -1170,11 +1206,11 @@ exactly four MessagePack objects:
 
    Exact format depends on the entry type:
 
-   Entry type (name)   Entry data ~
+   Entry type (name)   Entry data
    1 (Header)          Map containing data that describes the generator
                        instance that wrote this ShaDa file.  It is ignored
                        when reading ShaDa files.  Contains the following data:
-                       Key        Data ~
+                       Key        Data
                        generator  Binary, software used to generate ShaDa
                                   file. Is equal to "nvim" when ShaDa file was
                                   written by Neovim.
@@ -1192,7 +1228,7 @@ exactly four MessagePack objects:
                        |search-commands|). "su" key should be true on one of
                        the entries.  If key value is equal to default then it
                        is normally not present.  Keys:
-                       Key  Type     Default  Description ~
+                       Key  Type     Default  Description
                        sm   Boolean  true     Effective 'magic' value.
                        sc   Boolean  false    Effective 'smartcase' value.
                        sl   Boolean  true     True if search pattern comes
@@ -1232,9 +1268,9 @@ exactly four MessagePack objects:
    5 (Register)        Map describing one register (|registers|).  If key
                        value is equal to default then it is normally not
                        present.  Keys:
-                       Key  Type             Def   Description ~
+                       Key  Type             Def   Description
                        rt   UInteger         0     Register type:
-                                                   No  Description ~
+                                                   No  Description
                                                    0   |charwise-register|
                                                    1   |linewise-register|
                                                    2   |blockwise-register|
@@ -1269,14 +1305,14 @@ exactly four MessagePack objects:
    8 (Jump)
    10 (LocalMark)
    11 (Change)         Map containing some position description:
-                       Entry      Position ~
+                       Entry      Position
                        GlobaMark  Global mark position. |'A|
                        LocalMark  Local mark position. |'a|
                        Jump       One position from the |jumplist|.
                        Change     One position from the |changelist|.
 
                        Data contained in the map:
-                       Key  Type      Default  Description ~
+                       Key  Type      Default  Description
                        l    UInteger  1        Position line number.  Must be
                                                greater then zero.
                        c    UInteger  0        Position column number.
@@ -1289,7 +1325,7 @@ exactly four MessagePack objects:
                                                |shada-compatibility|.
    9 (BufferList)      Array containing maps.  Each map in the array
                        represents one buffer.  Possible keys:
-                       Key  Type      Default  Description ~
+                       Key  Type      Default  Description
                        l    UInteger  1        Position line number.  Must be
                                                greater then zero.
                        c    UInteger  0        Position column number.
@@ -1300,7 +1336,7 @@ exactly four MessagePack objects:
    * (Unknown)         Any other entry type is allowed for compatibility
                        reasons, see |shada-compatibility|.
 
-								*E575* *E576*
+								*E575*  *E576*
 Errors in ShaDa file may have two types: E575 used for all “logical” errors
 and E576 used for all “critical” errors.  Critical errors trigger behaviour
 described in |shada-error-handling| when writing and skipping the rest of the
@@ -1323,42 +1359,44 @@ Nvim stores configuration, data, and logs in standard locations. Plugins are
 strongly encouraged to follow this pattern also. Use |stdpath()| to get the
 paths.
 
-						*base-directories* *xdg*
+						*base-directories*  *xdg*
 The "base" (root) directories conform to the XDG Base Directory Specification.
 https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 The $XDG_CONFIG_HOME, $XDG_DATA_HOME, $XDG_RUNTIME_DIR, and $XDG_STATE_HOME
 environment variables are used if defined, else default values (listed below)
 are used.
 
-CONFIG DIRECTORY (DEFAULT) ~
+CONFIG DIRECTORY (DEFAULT)
                   *$XDG_CONFIG_HOME*            Nvim: stdpath("config")
     Unix:         ~/.config                   ~/.config/nvim
     Windows:      ~/AppData/Local             ~/AppData/Local/nvim
 
-DATA DIRECTORY (DEFAULT) ~
+DATA DIRECTORY (DEFAULT)
                   *$XDG_DATA_HOME*              Nvim: stdpath("data")
     Unix:         ~/.local/share              ~/.local/share/nvim
     Windows:      ~/AppData/Local             ~/AppData/Local/nvim-data
 
-RUN DIRECTORY (DEFAULT) ~
+RUN DIRECTORY (DEFAULT)
                   *$XDG_RUNTIME_DIR*            Nvim: stdpath("run")
     Unix:         /tmp/nvim.user/xxx          /tmp/nvim.user/xxx
     Windows:      $TMP/nvim.user/xxx          $TMP/nvim.user/xxx
 
-STATE DIRECTORY (DEFAULT) ~
+STATE DIRECTORY (DEFAULT)
                   *$XDG_STATE_HOME*             Nvim: stdpath("state")
     Unix:         ~/.local/state              ~/.local/state/nvim
     Windows:      ~/AppData/Local             ~/AppData/Local/nvim-data
 
-Note: Throughout the user manual these defaults are used as placeholders, e.g.
+Throughout the user manual these defaults are used as placeholders, e.g.
 "~/.config" is understood to mean "$XDG_CONFIG_HOME or ~/.config".
 
-LOG FILE					*$NVIM_LOG_FILE* *E5430*
+LOG FILE					*$NVIM_LOG_FILE*  *E5430*
 Besides 'debug' and 'verbose', Nvim keeps a general log file for internal
-debugging, plugins and RPC clients. >
+debugging, plugins and RPC clients.
+
 	:echo $NVIM_LOG_FILE
 By default, the file is located at stdpath("log")/log unless that path
 is inaccessible or if $NVIM_LOG_FILE was set before |startup|.
 
 
- vim:noet:tw=78:ts=8:ft=help:norl:
+DIY_again
+DIY_2  vim:ft=help:
