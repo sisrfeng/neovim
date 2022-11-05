@@ -40,20 +40,20 @@ Release policy
 
 Release "often", but not "early".
 
-The (unreleased) `master` branch is the "early" channel; it should not be
-released if it's not stable. High-risk changes may be merged to `master` if
-the next release is not imminent.
+The  (unreleased)  `master` branch is the "early" channel;
+it should not be released if it's not stable.
+High-risk changes may be merged to `master` if the next release is not imminent.迫在眉睫 
 
 For maintenance releases, create a `release-x.y` branch. If the current release
 has a major bug:
 
-1. Fix the bug on `master`.
-2. Cherry-pick the fix to `release-x.y`.
-3. Cut a release from `release-x.y`.
-    - Run `./scripts/release.sh`
-    - Update (force-push) the remote `stable` tag.
-    - The [CI job](https://github.com/neovim/neovim/blob/3d45706478cd030c3ee05b4f336164bb96138095/.github/workflows/release.yml#L11-L13)
-      will update the release assets based on the `stable` tag.
+    1. Fix the bug on `master`.
+    2. Cherry-pick the fix to `release-x.y`.
+    3. Cut a release from `release-x.y`.
+        - Run `./scripts/release.sh`
+        - Update (force-push) the remote `stable` tag.
+        - The [CI job](https://github.com/neovim/neovim/blob/3d45706478cd030c3ee05b4f336164bb96138095/.github/workflows/release.yml#L11-L13)
+        will update the release assets based on the `stable` tag.
 
 The neovim repository includes a backport [github action](https://github.com/zeebe-io/backport-action).
 In order to trigger the action, a PR must be labeled with a label matching the
